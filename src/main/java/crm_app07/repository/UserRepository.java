@@ -26,6 +26,7 @@ public class UserRepository {
 				user.setEmail(res.getString("email"));
 				user.setPassword(res.getString("password"));
 				user.setRoleID(res.getInt("role_id"));
+				user.setFullName(res.getString("full_name"));
 			}
 		} catch (SQLException e) {
 			System.out.println("Lỗi truy vấn!");
@@ -70,6 +71,40 @@ public class UserRepository {
 			}
 		}
 		return null;
+	}
+
+	public List<UserEntity> getAllLeaders() {
+		List<UserEntity> users = new ArrayList<UserEntity>();
+		String queryString = "SELECT * FROM user WHERE role_id = 2";
+		Connection connection = MysqlConfig.getConnection();
+		try {
+			PreparedStatement statement = connection.prepareStatement(queryString);
+
+			ResultSet res = statement.executeQuery();
+
+			while (res.next()) {
+				UserEntity user = new UserEntity();
+
+				user.setId(res.getInt("user_id"));
+				user.setEmail(res.getString("email"));
+				user.setPassword(res.getString("password"));
+				user.setRoleID(res.getInt("role_id"));
+				user.setFullName(res.getString("full_name"));
+				user.setPhoneNumber(res.getString("phone_number"));
+
+				users.add(user);
+			}
+		} catch (SQLException e) {
+			System.out.println("Lỗi truy vấn!");
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		return users;
 	}
 
 	public List<UserEntity> getAllUsersAndRole() {

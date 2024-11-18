@@ -65,7 +65,7 @@
 						</form>
 					</li>
 				</ul>
-				<jsp:include page="dropdown-menu.jsp" />
+								<jsp:include page="dropdown-menu.jsp" />
 
 			</div>
 			<!-- /.navbar-header -->
@@ -75,7 +75,7 @@
 		<!-- Left navbar-header -->
 		<div class="navbar-default sidebar" role="navigation">
 			<div class="sidebar-nav navbar-collapse slimscrollsidebar">
-				<jsp:include page="menu.jsp" />
+								<jsp:include page="menu.jsp" />
 
 			</div>
 		</div>
@@ -85,7 +85,7 @@
 			<div class="container-fluid">
 				<div class="row bg-title">
 					<div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-						<h4 class="page-title">Sửa thành viên</h4>
+						<h4 class="page-title">Sửa dự án</h4>
 					</div>
 				</div>
 				<!-- /.row -->
@@ -94,67 +94,51 @@
 					<div class="col-md-2 col-12"></div>
 					<div class="col-md-8 col-xs-12">
 						<div class="white-box">
-							<form
-								action="${pageContext.request.contextPath}/user-edit?id=${user.id}"
-								method="post" class="form-horizontal form-material">
+							<form action="${pageContext.request.contextPath}/project-edit?id=${project.id}" method="post" class="form-horizontal form-material"> 
 								<div class="form-group">
-									<label class="col-md-12">Full Name</label>
+									<label class="col-md-12">Tên dự án</label>
 									<div class="col-md-12">
-										<input name="fullname" type="text" placeholder="Johnathan Doe"
-											class="form-control form-control-line" required
-											value="${user.fullName}" />
+										<input type="text" placeholder="Tên dự án" name="projectName" required
+											class="form-control form-control-line"
+											value="${project.name}" />
+											
 									</div>
 								</div>
 								<div class="form-group">
-									<label for="example-email" class="col-md-12">Email</label>
+									<label class="col-md-12">Người phụ trách</label>
 									<div class="col-md-12">
-										<input type="email" placeholder="johnathan@admin.com"
-											class="form-control form-control-line" name="email"
-											id="example-email" required value="${user.email}" disabled>
-									</div>
-								</div>
-								<div class="form-group">
-									<label class="col-md-12">Password</label>
-									<div class="col-md-12">
-										<input type="password" value="password"
-											class="form-control form-control-line" name="password"
-											required disabled>
-									</div>
-								</div>
-								<div class="form-group">
-									<label class="col-md-12">Phone No</label>
-									<div class="col-md-12">
-										<input type="text" placeholder="123 456 7890"
-											class="form-control form-control-line" name="phone" required
-											value="${user.phoneNumber}">
-									</div>
-								</div>
-								<div class="form-group">
-									<label class="col-sm-12">Select Role</label>
-									<div class="col-sm-12">
-										<select class="form-control form-control-line" name="role"
-											required>
-											<c:forEach var="role" items="${roles}" varStatus="status">
-												<option value="${role.id}"
-													<c:if test="${user.roleID == role.id}">selected</c:if>>${role.name}</option>
+										<select class="form-control form-control-line"
+											name="leaderID" required>
+											<c:forEach var="leader" items="${leaders}">
+												<option value="${leader.id}">${leader.fullName}</option>
 											</c:forEach>
 										</select>
-
 									</div>
 								</div>
-
+								<div class="form-group">
+									<label class="col-md-12">Ngày bắt đầu</label>
+									<div class="col-md-12">
+										<input type="date" placeholder="dd/MM/yyyy" name="startDate" required
+											class="form-control form-control-line"
+											value="${project.startDate}" />
+											
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-md-12">Ngày kết thúc</label>
+									<div class="col-md-12">
+										<input type="date" placeholder="dd/MM/yyyy" name="endDate" required
+											class="form-control form-control-line"
+											value="${project.endDate}" />
+									</div>
+								</div>
 								<div class="form-group">
 									<div class="col-sm-12">
-										<button type="submit" class="btn btn-success">Edit
-											User</button>
-										<a href="${pageContext.request.contextPath}/users"
-											class="btn btn-primary">Quay lại</a>
+										<button type="submit" class="btn btn-success">Sửa</button>
+										<a href="${pageContext.request.contextPath}/projects" class="btn btn-primary">Quay lại</a>
 									</div>
 								</div>
 							</form>
-
-
-
 						</div>
 					</div>
 					<div class="col-md-2 col-12"></div>

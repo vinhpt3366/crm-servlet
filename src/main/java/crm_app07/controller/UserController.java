@@ -17,13 +17,13 @@ import javax.servlet.http.HttpServletResponse;
 
 import crm_app07.entity.RoleEntity;
 import crm_app07.entity.TaskEntity;
+import crm_app07.entity.UserDetails;
 import crm_app07.entity.UserEntity;
 import crm_app07.services.RoleService;
 import crm_app07.services.TaskService;
 import crm_app07.services.UserService;
 import crm_app07.utils.NumberUtil;
 import crm_app07.utils.PasswordUtils;
-import crm_app07.utils.UserDetails;
 
 @WebServlet(name = "userController", urlPatterns = { "/users", "/user-add", "/user-edit", "/user-details" })
 public class UserController extends HttpServlet {
@@ -181,12 +181,15 @@ public class UserController extends HttpServlet {
 			}
 
 			int totalTasks = userDetails.getTotalTasks() > 0 ? userDetails.getTotalTasks() : 1;
-			double notStartedPercentage = ((double) notStartedTasks / totalTasks) * 100;
-			double inProgressPercentage = ((double) inProgressTasks / totalTasks) * 100;
-			double completedPercentage = ((double) completedTasks / totalTasks) * 100;
-			String formattedNotStartedPercentage = df.format(notStartedPercentage);
-			String formattedInProgressPercentage = df.format(inProgressPercentage);
-			String formattedCompletedPercentage = df.format(completedPercentage);
+//			double notStartedPercentage = ((double) notStartedTasks / totalTasks) * 100;
+//			double inProgressPercentage = ((double) inProgressTasks / totalTasks) * 100;
+//			double completedPercentage = ((double) completedTasks / totalTasks) * 100;
+//			String formattedNotStartedPercentage = df.format(notStartedPercentage);
+			String formattedNotStartedPercentage = NumberUtil.calculatePercentage(notStartedTasks, totalTasks);
+			String formattedInProgressPercentage = NumberUtil.calculatePercentage(inProgressTasks, totalTasks);
+			String formattedCompletedPercentage = NumberUtil.calculatePercentage(completedTasks, totalTasks);
+//			String formattedInProgressPercentage = df.format(inProgressPercentage);
+//			String formattedCompletedPercentage = df.format(completedPercentage);
 
 			req.setAttribute("notStartedPercentage", formattedNotStartedPercentage);
 			req.setAttribute("inProgressPercentage", formattedInProgressPercentage);

@@ -8,7 +8,7 @@ public class ProjectEntity {
 	private String description;
 	private Date startDate;
 	private Date endDate;
-	private int creatorID;
+	private int leaderID;
 
 	public int getId() {
 		return id;
@@ -50,12 +50,12 @@ public class ProjectEntity {
 		this.endDate = endDate;
 	}
 
-	public int getCreatorID() {
-		return creatorID;
+	public int getLeaderID() {
+		return leaderID;
 	}
 
-	public void setCreatorID(int creatorID) {
-		this.creatorID = creatorID;
+	public void setLeaderID(int leaderID) {
+		this.leaderID = leaderID;
 	}
 
 }

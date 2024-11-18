@@ -14,32 +14,26 @@ import javax.servlet.http.HttpSession;
 import crm_app07.entity.UserEntity;
 import crm_app07.services.LoginService;
 
-@WebServlet(name = "loginController", urlPatterns = { "/login" })
+@WebServlet(name = "loginController", urlPatterns = { "/login", "/logout" })
 public class LoginController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private LoginService loginService = new LoginService();
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-		String email = "";
-		String password = "";
-		Cookie[] cookies = req.getCookies();
-		for (Cookie cookie : cookies) {
-			String name = cookie.getName();
-			String value = cookie.getValue();
-
-			if (name.equals("email")) {
-				email = value;
-			}
-
-			if (name.equals("password")) {
-				password = value;
-			}
+		String action = req.getServletPath();
+		switch (action) {
+		case "/login":
+			login(req, resp);
+			break;
+		case "/logout":
+			logout(req, resp);
+			break;
+		default:
+			resp.sendRedirect(req.getContextPath() + "/login");
+			break;
 		}
-		req.setAttribute("email", email);
-		req.setAttribute("password", password);
-		req.getRequestDispatcher("login.jsp").forward(req, resp);
+
 	}
 
 	@Override
@@ -64,30 +58,33 @@ public class LoginController extends HttpServlet {
 		}
 
 		if (user != null && user.getEmail() != null) {
+			String token = loginService.insertToken(user.getId());
+
+			if (!token.isEmpty()) {
+				Cookie tokenCookie = new Cookie("token", token);
+				tokenCookie.setMaxAge(1 * 24 * 60 * 60);
+				resp.addCookie(tokenCookie);
+			}
+
+			Cookie emailCookie = new Cookie("email", email);
+			emailCookie.setMaxAge(24 * 60 * 60); // 24 giờ
+			resp.addCookie(emailCookie);
+
 			if ("on".equals(remember)) {
-				Cookie emailCookie = new Cookie("email", email);
-				Cookie passwordCookie = new Cookie("password", password);
-				emailCookie.setMaxAge(30 * 24 * 60 * 60); // 30 ngày
-				passwordCookie.setMaxAge(30 * 24 * 60 * 60); // 30 ngày
-				resp.addCookie(emailCookie);
-				resp.addCookie(passwordCookie);
-			} else {
-				Cookie emailCookie = new Cookie("email", "");
-				Cookie passwordCookie = new Cookie("password", "");
-				emailCookie.setMaxAge(0);
-				passwordCookie.setMaxAge(0);
-				resp.addCookie(emailCookie);
-				resp.addCookie(passwordCookie);
+				Cookie rememberCookie = new Cookie("remember", remember);
+				rememberCookie.setMaxAge(24 * 60 * 60); // 24 giờ
+				resp.addCookie(rememberCookie);
 			}
 
-			HttpSession oldSession = req.getSession(false);
-			if (oldSession != null) {
-				oldSession.invalidate();
-			}
-
-			HttpSession session = req.getSession();
-			session.setMaxInactiveInterval(30 * 60); // 30 phút
+			HttpSession session = req.getSession(true);
+			session.setMaxInactiveInterval(24 * 60 * 60); // 24 giờ
 			session.setAttribute("user", user);
+
+			String roleId = String.valueOf(user.getRoleID());
+			Cookie userCookie = new Cookie("roleID", roleId);
+			userCookie.setMaxAge(24 * 60 * 60);
+			userCookie.setPath("/");
+			resp.addCookie(userCookie);
 
 			switch (user.getRoleID()) {
 			case 1:
@@ -101,6 +98,61 @@ public class LoginController extends HttpServlet {
 			req.setAttribute("error", "Email hoặc mật khẩu không đúng");
 			req.getRequestDispatcher("login.jsp").forward(req, resp);
 		}
+	}
+
+	private void login(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String email = null;
+		String password = null;
+		Cookie[] cookies = req.getCookies();
+
+		if (cookies != null) {
+			for (Cookie cookie : cookies) {
+				String name = cookie.getName();
+				String value = cookie.getValue();
+
+				if ("email".equals(name)) {
+					email = value;
+				}
+
+				if ("password".equals(name)) {
+					password = value;
+				}
+			}
+		}
+
+		if (email != null && !email.isEmpty()) {
+			req.setAttribute("email", email);
+		}
+		if (password != null && !password.isEmpty()) {
+			req.setAttribute("password", password);
+		}
+
+		req.getRequestDispatcher("login.jsp").forward(req, resp);
+	}
+
+	private void logout(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		resp.setContentType("text/plain");
+		resp.setCharacterEncoding("UTF-8");
+
+		Cookie[] cookies = req.getCookies();
+		if (cookies != null) {
+			for (Cookie cookie : cookies) {
+				String name = cookie.getName();
+				String value = cookie.getValue();
+				if ("token".equals(name)) {
+					loginService.deleteToken(value);
+
+					Cookie tokenCookie = new Cookie("token", "");
+					tokenCookie.setMaxAge(0);
+					resp.addCookie(tokenCookie);
+				}
+			}
+		}
+		HttpSession oldSession = req.getSession(false);
+		if (oldSession != null) {
+			oldSession.invalidate();
+		}
+		resp.sendRedirect(req.getContextPath() + "/login");
 	}
 
 }

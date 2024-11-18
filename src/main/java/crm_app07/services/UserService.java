@@ -12,8 +12,16 @@ public class UserService {
 		return userRepository.getAllUsersAndRole();
 	}
 
+	public List<UserEntity> getAllLeaders() {
+		return userRepository.getAllLeaders();
+	}
+
 	public UserEntity getUserByID(int id) {
 		return userRepository.getUserByID(id);
+	}
+
+	public UserEntity getUserByEmail(String email) {
+		return userRepository.getUserByEmail(email);
 	}
 
 	public boolean deleteUserByID(int id) {

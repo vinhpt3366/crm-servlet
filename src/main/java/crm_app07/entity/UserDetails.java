@@ -1,10 +1,8 @@
-package crm_app07.utils;
+package crm_app07.entity;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import crm_app07.entity.TaskEntity;
 
 public class UserDetails {
 	private int id;

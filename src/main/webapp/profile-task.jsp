@@ -1,14 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-
 <%@ page import="crm_app07.entity.UserDetails"%>
 <%@ page import="java.util.Map"%>
 <%@ page import="java.util.List"%>
 <%@ page import="crm_app07.entity.TaskEntity"%>
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -91,14 +87,14 @@
 			<div class="container-fluid">
 				<div class="row bg-title">
 					<div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-						<h4 class="page-title">Chi tiết thành viên</h4>
+						<h4 class="page-title">Thống kê công việc</h4>
 					</div>
 				</div>
 				<!-- /.row -->
 				<!-- .row -->
 				<div class="row">
 					<div class="col-md-4 col-xs-12">
-						<div class="white-box">
+						<%-- <div class="white-box">
 							<div class="user-bg">
 								<img width="100%" alt="user" src="plugins/images/large/img1.jpg">
 								<div class="overlay-box">
@@ -115,7 +111,7 @@
 
 									</div>
 								</div>
-							</div>
+							</div> --%>
 
 						</div>
 					</div>
@@ -210,60 +206,44 @@
 				<!-- BEGIN DANH SÁCH CÔNG VIỆC -->
 				<h4>DANH SÁCH CÔNG VIỆC</h4>
 				<div class="row">
-					<%
-					Map<Integer, List<TaskEntity>> tasksByStatus = (Map<Integer, List<TaskEntity>>) request.getAttribute("tasksByStatus");
-
-					if (tasksByStatus != null) {
-						for (Map.Entry<Integer, List<TaskEntity>> entry : tasksByStatus.entrySet()) {
-					%>
-					<div class="col-md-4">
+					<div class="col-sm-12">
 						<div class="white-box">
-							<h3 class="box-title">
-								<%
-								switch (entry.getKey()) {
-								case 1:
-									out.print("Chưa thực hiện");
-									break;
-								case 2:
-									out.print("Đang thực hiện");
-									break;
-								case 3:
-									out.print("Đã hoàn thành");
-									break;
-								default:
-									out.print("Trạng thái không xác định");
-								}
-								%>
-							</h3>
-							<div class="message-center">
-								<%
-								for (TaskEntity task : entry.getValue()) {
-								%>
-								<a href="#">
-									<div class="mail-contnet">
-										<h5><%=task.getName()%></h5>
-										<span class="mail-desc"></span> <span class="time">Bắt
-											đầu: <%=task.getStartDate()%></span> <span class="time">Kết
-											thúc: <%=task.getEndDate()%></span>
-									</div>
-								</a>
-								<%
-								}
-								%>
+							<div class="table-responsive">
+								<table class="table" id="example">
+									<thead>
+										<tr>
+											<th>STT</th>
+											<th>Tên Công Việc</th>
+											<th>Dự Án</th>
+											<th>Ngày Bắt Đầu</th>
+											<th>Ngày Kết Thúc</th>
+											<th>Trạng Thái</th>
+											<th>Hành Động</th>
+										</tr>
+									</thead>
+									<tbody>
+
+										<c:forEach var="task" items="${taskDetailsEntities}"
+											varStatus="status">
+											<tr>
+												<td>${status.index + 1}</td>
+												<td>${task.name}</td>
+												<td>${task.projectName}</td>
+												<td>${task.startDate}</td>
+												<td>${task.endDate}</td>
+												<td>${task.statusName}</td>
+												<td><a
+													href="${pageContext.request.contextPath}/profile-edit?id=${task.id}"
+													class="btn btn-sm btn-primary">Cập nhật</a></td>
+											</tr>
+										</c:forEach>
+
+									</tbody>
+								</table>
 							</div>
 						</div>
 					</div>
-					<%
-					}
-					} else {
-					%>
-					<p>No tasks available.</p>
-					<%
-					}
-					%>
 				</div>
-
-
 				<!-- END DANH SÁCH CÔNG VIỆC -->
 			</div>
 			<!-- /.container-fluid -->

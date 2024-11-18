@@ -1,8 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-
+<%@ page import="crm_app07.entity.UserDetails"%>
+<%@ page import="java.util.Map"%>
+<%@ page import="java.util.List"%>
+<%@ page import="crm_app07.entity.TaskEntity"%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -85,81 +87,35 @@
 			<div class="container-fluid">
 				<div class="row bg-title">
 					<div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-						<h4 class="page-title">Sửa thành viên</h4>
+						<h4 class="page-title">Chi tiết thành viên</h4>
 					</div>
 				</div>
 				<!-- /.row -->
 				<!-- .row -->
 				<div class="row">
-					<div class="col-md-2 col-12"></div>
-					<div class="col-md-8 col-xs-12">
+					<div class="col-md-4 col-xs-12">
 						<div class="white-box">
-							<form
-								action="${pageContext.request.contextPath}/user-edit?id=${user.id}"
-								method="post" class="form-horizontal form-material">
-								<div class="form-group">
-									<label class="col-md-12">Full Name</label>
-									<div class="col-md-12">
-										<input name="fullname" type="text" placeholder="Johnathan Doe"
-											class="form-control form-control-line" required
-											value="${user.fullName}" />
-									</div>
-								</div>
-								<div class="form-group">
-									<label for="example-email" class="col-md-12">Email</label>
-									<div class="col-md-12">
-										<input type="email" placeholder="johnathan@admin.com"
-											class="form-control form-control-line" name="email"
-											id="example-email" required value="${user.email}" disabled>
-									</div>
-								</div>
-								<div class="form-group">
-									<label class="col-md-12">Password</label>
-									<div class="col-md-12">
-										<input type="password" value="password"
-											class="form-control form-control-line" name="password"
-											required disabled>
-									</div>
-								</div>
-								<div class="form-group">
-									<label class="col-md-12">Phone No</label>
-									<div class="col-md-12">
-										<input type="text" placeholder="123 456 7890"
-											class="form-control form-control-line" name="phone" required
-											value="${user.phoneNumber}">
-									</div>
-								</div>
-								<div class="form-group">
-									<label class="col-sm-12">Select Role</label>
-									<div class="col-sm-12">
-										<select class="form-control form-control-line" name="role"
-											required>
-											<c:forEach var="role" items="${roles}" varStatus="status">
-												<option value="${role.id}"
-													<c:if test="${user.roleID == role.id}">selected</c:if>>${role.name}</option>
-											</c:forEach>
-										</select>
+							<div class="user-bg">
+								<img width="100%" alt="user" src="plugins/images/large/img1.jpg">
+								<div class="overlay-box">
+									<div class="user-content">
+										<a href="javascript:void(0)"><img
+											src="plugins/images/users/genu.jpg"
+											class="thumb-lg img-circle" alt="img"></a>
+										<%
+										UserDetails userDetails = (UserDetails) request.getAttribute("userDetails");
+										%>
+
+										<h4 class="text-white"><%=userDetails.getFullName()%></h4>
+										<h5 class="text-white"><%=userDetails.getEmail()%></h5>
 
 									</div>
 								</div>
-
-								<div class="form-group">
-									<div class="col-sm-12">
-										<button type="submit" class="btn btn-success">Edit
-											User</button>
-										<a href="${pageContext.request.contextPath}/users"
-											class="btn btn-primary">Quay lại</a>
-									</div>
-								</div>
-							</form>
-
-
+							</div>
 
 						</div>
 					</div>
-					<div class="col-md-2 col-12"></div>
-				</div>
-				<!-- /.row -->
+					
 			</div>
 			<!-- /.container-fluid -->
 			<footer class="footer text-center"> 2018 &copy; myclass.com

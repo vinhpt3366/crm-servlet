@@ -15,6 +15,19 @@ public class TaskEntity {
 	private String projectName;
 	private String statusName;
 
+	public TaskEntity(int id, String name, String startDate, String endDate, int projectID) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.startDate = startDate;
+		this.endDate = endDate;
+		this.projectID = projectID;
+	}
+
+	public TaskEntity() {
+		super();
+	}
+
 	public int getId() {
 		return id;
 	}

@@ -76,7 +76,6 @@
 		<div class="navbar-default sidebar" role="navigation">
 			<div class="sidebar-nav navbar-collapse slimscrollsidebar">
 				<jsp:include page="menu.jsp" />
-
 			</div>
 		</div>
 		<!-- Left navbar-header end -->
@@ -85,7 +84,7 @@
 			<div class="container-fluid">
 				<div class="row bg-title">
 					<div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-						<h4 class="page-title">Sửa thành viên</h4>
+						<h4 class="page-title">Sửa công việc</h4>
 					</div>
 				</div>
 				<!-- /.row -->
@@ -95,66 +94,72 @@
 					<div class="col-md-8 col-xs-12">
 						<div class="white-box">
 							<form
-								action="${pageContext.request.contextPath}/user-edit?id=${user.id}"
+								action="${pageContext.request.contextPath}/task-edit?id=${task.id}"
 								method="post" class="form-horizontal form-material">
 								<div class="form-group">
-									<label class="col-md-12">Full Name</label>
+									<label class="col-md-12">Dự án</label>
 									<div class="col-md-12">
-										<input name="fullname" type="text" placeholder="Johnathan Doe"
-											class="form-control form-control-line" required
-											value="${user.fullName}" />
-									</div>
-								</div>
-								<div class="form-group">
-									<label for="example-email" class="col-md-12">Email</label>
-									<div class="col-md-12">
-										<input type="email" placeholder="johnathan@admin.com"
-											class="form-control form-control-line" name="email"
-											id="example-email" required value="${user.email}" disabled>
-									</div>
-								</div>
-								<div class="form-group">
-									<label class="col-md-12">Password</label>
-									<div class="col-md-12">
-										<input type="password" value="password"
-											class="form-control form-control-line" name="password"
-											required disabled>
-									</div>
-								</div>
-								<div class="form-group">
-									<label class="col-md-12">Phone No</label>
-									<div class="col-md-12">
-										<input type="text" placeholder="123 456 7890"
-											class="form-control form-control-line" name="phone" required
-											value="${user.phoneNumber}">
-									</div>
-								</div>
-								<div class="form-group">
-									<label class="col-sm-12">Select Role</label>
-									<div class="col-sm-12">
-										<select class="form-control form-control-line" name="role"
-											required>
-											<c:forEach var="role" items="${roles}" varStatus="status">
-												<option value="${role.id}"
-													<c:if test="${user.roleID == role.id}">selected</c:if>>${role.name}</option>
+										<!-- <select class="form-control form-control-line">
+											<option>Dự án CRM</option>
+											<option>Dự án Elearning</option>
+											<option>Dự án Rạp chiếu phim</option>
+										</select>
+										 -->
+										<select class="form-control form-control-line"
+											name="projectID" required>
+											<c:forEach var="project" items="${projects}">
+												<%-- <option value="${project.id}">${project.name}</option> --%>
+												<option value="${project.id}"
+													<c:if test="${project.id == task.projectID}">selected</c:if>>${project.name}</option>
 											</c:forEach>
 										</select>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-md-12">Tên công việc</label>
+									<div class="col-md-12">
+										<input type="text" placeholder="Tên công việc" name="taskName"
+											required class="form-control form-control-line"
+											value="${task.name}" />
 
 									</div>
 								</div>
-
+								<div class="form-group">
+									<label class="col-md-12">Người thực hiện</label>
+									<div class="col-md-12">
+										<select class="form-control form-control-line"
+											name="assigneeID" required>
+											<c:forEach var="user" items="${users}">
+												<option value="${user.id}"
+													<c:if test="${user.id == task.assigneeID}">selected</c:if>>${user.fullName}</option>
+											</c:forEach>
+										</select>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-md-12">Ngày bắt đầu</label>
+									<div class="col-md-12">
+										<input type="date" placeholder="dd/MM/yyyy" name="startDate"
+											required class="form-control form-control-line"
+											value="${task.startDate}">
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-md-12">Ngày kết thúc</label>
+									<div class="col-md-12">
+										<input type="date" placeholder="dd/MM/yyyy" name="endDate"
+											required class="form-control form-control-line"
+											value="${task.endDate}">
+									</div>
+								</div>
 								<div class="form-group">
 									<div class="col-sm-12">
-										<button type="submit" class="btn btn-success">Edit
-											User</button>
-										<a href="${pageContext.request.contextPath}/users"
+										<button type="submit" class="btn btn-success">Sửa</button>
+										<a href="${pageContext.request.contextPath}/tasks"
 											class="btn btn-primary">Quay lại</a>
 									</div>
 								</div>
 							</form>
-
-
-
 						</div>
 					</div>
 					<div class="col-md-2 col-12"></div>
